@@ -1,10 +1,10 @@
 ## modal.js
 a lightbox plugin that loads up a higher resolution image from its thumbnail.
 
-1. no jquery, lightweight.
+1. no jquery, prototype-based, lightweight.
 2. responsive.
-3. only images are supported so far.
-4. tested to work in chrome, safari, firefox. not tested in ie.
+3. only images are supported so far. might support video in the future.
+4. tested to work in chrome, safari, firefox, ie 11.
 5. animations are handled by `animate.css` by Daniel Eden.
 
 
@@ -13,7 +13,16 @@ To use, initialize `modal.js` with the following arguments. The example uses a d
 
 ```
 var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-	    window.addEventListener('resize', onWindowResize.bind(m), false);
+window.addEventListener('resize', onWindowResize.bind(m), false); // bind resize event for responsiveness
+
+```
+
+To create another set of gallery on the same html page, you can initialize another new Modal:
+
+```
+var m2 = new Modal( document.getElementById('second-gallery'), options );
+window.addEventListener('resize', onWindowResize.bind(m2), false);
+
 ```
 
 The high resolution images are to be keep in the folder named, "high-res", bearing the same naming convention as its thumbnails.

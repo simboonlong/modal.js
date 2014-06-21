@@ -37,8 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				this.modalBg.style.height = document.body.clientHeight + 'px';
 			} // modalBg overlay coverage
 
-			this.modalBox.style.maxHeight = this.img.height + 'px'; // update vertical position due to height changes
-		
+			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // update vertical position due to height changes
 		}
 	}
 
@@ -93,14 +92,16 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.removeStyles();
 		this.modalBg.className += 'animated fadeIn';
 
+		console.log(this.img);
+
 		this.img.onload = function( event ){
 			this.img.style.display = "inline-block"; // temporary show
 			this.leftModal.style.display = 'inline-block'; // temporary show
 			this.rightModal.style.display = 'inline-block'; // temporary show
 			this.closeModal.style.display = 'block'; // temporary show
 
-			this.modalBox.style.maxWidth = this.img.width + 'px';  // set modal size once for centralizing loading gif
-			this.modalBox.style.maxHeight = this.img.height + 'px'; // set modal size once for centralizing loading gif
+			this.modalBox.style.maxWidth = this.img.clientWidth + 'px';  // set modal size once for centralizing loading gif
+			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // set modal size once for centralizing loading gif
 
 			this.modalBox.className += 'animated '+this.modalBox.animation_type+'';
 			this.update(); // update position
@@ -184,7 +185,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 
 		var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-	    window.addEventListener('resize', onWindowResize.bind(m), false);
+	    window.addEventListener('resize', onWindowResize.bind(m), false); // bind resize event for responsiveness
 
 	});
 

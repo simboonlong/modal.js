@@ -24,8 +24,9 @@ figure img{
 }
 #modal-box{
 	text-align: center;
-	position: fixed;
 	margin: auto;
+	position: fixed;
+	width: 90%; /* must declare width for IE to work */
 	top:0;
 	bottom: 0;
 	right: 5%;
@@ -36,6 +37,7 @@ figure img{
 }
 	#modal-box img{
 		max-width: 100%;
+		height: auto; /* must declare height for IE to work */
 	}
 .close-modal,
 .left-modal,
