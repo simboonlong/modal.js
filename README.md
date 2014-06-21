@@ -45,8 +45,7 @@ view animate.css docs at this link http://daneden.github.io/animate.css/
 
 
 ## Known issues
-1. After image is loaded in small browser window, image will not expand when window is being resized to larger screen size.
-2. IE, after switching images by navigating arrows, background overlay gets re-animated again causing a "flash".
+1. In IE, after switching images by navigating arrows, background overlay gets re-animated again causing a "flash".
 
 
 ## License
