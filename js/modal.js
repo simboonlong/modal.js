@@ -37,6 +37,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 				this.modalBg.style.height = document.body.clientHeight + 'px';
 			} // modalBg overlay coverage
 
+			this.modalBox.style.maxWidth = this.img.naturalWidth + 'px';
 			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // update vertical position due to height changes
 		
 		}
