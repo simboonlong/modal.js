@@ -38,6 +38,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 			} // modalBg overlay coverage
 
 			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // update vertical position due to height changes
+		
 		}
 	}
 
@@ -91,8 +92,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.removeClasses();
 		this.removeStyles();
 		this.modalBg.className += 'animated fadeIn';
-
-		console.log(this.img);
 
 		this.img.onload = function( event ){
 			this.img.style.display = "inline-block"; // temporary show
@@ -185,7 +184,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 
 		var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-	    window.addEventListener('resize', onWindowResize.bind(m), false); // bind resize event for responsiveness
+	    window.addEventListener('resize', onWindowResize.bind(m), false);
 
 	});
 

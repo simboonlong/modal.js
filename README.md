@@ -3,7 +3,7 @@ a lightbox plugin that loads up a higher resolution image from its thumbnail.
 
 1. no jquery, prototype-based, lightweight.
 2. responsive.
-3. only images are supported so far. might support video in the future.
+3. only images are supported so far.
 4. tested to work in chrome, safari, firefox, ie 11.
 5. animations are handled by `animate.css` by Daniel Eden.
 
@@ -42,6 +42,10 @@ var options = {
 `animation_time` has to be the same timing as what is indicated in the `animate.css` stylesheet. Do change accordingly to your needs.
 
 view animate.css docs at this link http://daneden.github.io/animate.css/
+
+
+## Known issues
+1. After image is loaded in small browser window, image will not expand when window is being resized to larger screen size.
 
 
 ## License
