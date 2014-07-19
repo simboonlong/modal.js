@@ -11,7 +11,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-(function(){
+(function( global ){
 	"use strict";
 
 	function onWindowResize( event ){
@@ -39,7 +39,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 			this.modalBox.style.maxWidth = this.img.naturalWidth + 'px';
 			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // update vertical position due to height changes
-		
+
 		}
 	}
 
@@ -126,19 +126,24 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 	}
 
 	function Modal( gallery, options ){
+		// create respective divs
+		var modalBg = document.createElement('div'),
+			modalBox = document.createElement('div'),
+			closeModal = document.createElement('div'),
+			leftModal = document.createElement('div'),
+			rightModal = document.createElement('div');
+
 		// core settings
 		this.gallery = gallery;
 		this.gallery.figure = this.gallery.getElementsByTagName('figure');
 		this.gallery.figures_length = this.gallery.figure.length;
 
 		// modal bg div tag
-		var modalBg = document.createElement('div');
 		this.modalBg = modalBg;
 		this.modalBg.id = "modal-bg";
 		this.modalBg.animation_time = options.animation_time;
 
 		// modal box div tag
-		var modalBox = document.createElement('div');
 		this.modalBox = modalBox;
 		this.modalBox.id = "modal-box";
 		this.modalBox.selectedFigure = '';
@@ -146,7 +151,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.modalBg.appendChild( this.modalBox );
 
 		// closing div tag
-		var closeModal = document.createElement('div');
 		this.closeModal = closeModal;
 		this.closeModal.className += "close-modal bold";
 		this.closeModal.innerHTML = '&#88;';
@@ -154,7 +158,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.modalBox.appendChild( this.closeModal );
 
 		// left div tag
-		var leftModal = document.createElement('div');
 		this.leftModal = leftModal;
 		this.leftModal.className += "left-modal bold";
 		this.leftModal.innerHTML = '&#60;';
@@ -162,7 +165,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.modalBox.appendChild( this.leftModal );
 
 		// right div tag
-		var rightModal = document.createElement('div');
 		this.rightModal = rightModal;
 		this.rightModal.className += "right-modal bold";
 		this.rightModal.innerHTML = '&#62;';
@@ -177,7 +179,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.initialize();
 	}
 
-	window.addEventListener('DOMContentLoaded', function( event ){
+	global.addEventListener('DOMContentLoaded', function( event ){
 
 		var options = {
 			animation_type: 'fadeIn', // animate.css by Daniel Eden
@@ -185,8 +187,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 
 		var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-	    window.addEventListener('resize', onWindowResize.bind(m), false);
+	    this.addEventListener('resize', onWindowResize.bind(m), false); // bind Modal to resizing event for responsiveness
 
 	});
 
-})();
+})( this );

@@ -1,7 +1,7 @@
 ## modal.js
 a lightbox plugin that loads up a higher resolution image from its thumbnail.
 
-1. no jquery, prototype-based, lightweight.
+1. no jquery, prototype-based, event-driven, lightweight.
 2. responsive.
 3. only images are supported so far.
 4. tested to work in chrome, safari, firefox, ie 11.
@@ -13,7 +13,7 @@ To use, initialize `modal.js` with the following arguments. The example uses a d
 
 ```
 var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-window.addEventListener('resize', onWindowResize.bind(m), false); // bind resize event for responsiveness
+this.addEventListener('resize', onWindowResize.bind(m), false); // bind Modal to resizing event for responsiveness
 
 ```
 
@@ -21,7 +21,7 @@ To create another set of gallery on the same html page, you can initialize anoth
 
 ```
 var m2 = new Modal( document.getElementById('second-gallery'), options );
-window.addEventListener('resize', onWindowResize.bind(m2), false);
+this.addEventListener('resize', onWindowResize.bind(m2), false);
 
 ```
 
@@ -53,4 +53,4 @@ modal.js is licensed under the MIT license. (http://opensource.org/licenses/MIT)
 
 
 ## Contributing
-still figuring out on using github. lemme know by email first for now.
+Feel free to contribute.
