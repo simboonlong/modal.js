@@ -11,7 +11,7 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-(function( global ){
+(function( window, document, undefined ){
 	"use strict";
 
 	function onWindowResize( event ){
@@ -179,7 +179,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.initialize();
 	}
 
-	global.addEventListener('DOMContentLoaded', function( event ){
+	document.addEventListener('DOMContentLoaded', function( event ){
 
 		var options = {
 			animation_type: 'fadeIn', // animate.css by Daniel Eden
@@ -187,8 +187,8 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		}
 
 		var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-	    this.addEventListener('resize', onWindowResize.bind(m), false); // bind Modal to resizing event for responsiveness
+	    window.addEventListener('resize', onWindowResize.bind(m), false); // bind Modal to resizing event for responsiveness
 
 	});
 
-})( this );
+})( this, this.document );
