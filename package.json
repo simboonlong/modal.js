@@ -1,0 +1,11 @@
+{
+  "name": "modal.js",
+  "version": "0.1.0",
+  "authors": [
+    "Sim Boon Long <simboonlong@gmail.com>"
+  ],
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-contrib-watch": "~0.6.1"
+  }
+}

@@ -4,24 +4,26 @@ a lightbox plugin that loads up a higher resolution image from its thumbnail.
 1. no jquery, prototype-based, event-driven, lightweight.
 2. responsive.
 3. only images are supported so far.
-4. tested to work in chrome, safari, firefox, ie 11.
+4. tested to work in chrome, safari, firefox.
 5. animations are handled by `animate.css` by Daniel Eden.
 
 
 ## Usage
-To use, initialize `modal.js` with the following arguments. The example uses a div with the id, "gallery".
+To use, initialize `modal.js` with the following arguments. The example uses a div with the id, "any-name".
 
 ```
-var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-this.addEventListener('resize', onWindowResize.bind(m), false); // bind Modal to resizing event for responsiveness
+var m = new Modal( document.getElementById('any-name'), options ); // set config
+m.initialize();  // init modal
+window.addEventListener('resize', onWindowResize.bind(m), false);
 
 ```
 
 To create another set of gallery on the same html page, you can initialize another new Modal:
 
 ```
-var m2 = new Modal( document.getElementById('second-gallery'), options );
-this.addEventListener('resize', onWindowResize.bind(m2), false);
+var m2 = new Modal( document.getElementById('any-name2'), options ); // set config
+m2.initialize();  // init modal
+window.addEventListener('resize', onWindowResize.bind(m2), false);
 
 ```
 
@@ -29,23 +31,21 @@ The high resolution images are to be keep in the folder named, "high-res", beari
 
 
 ## Customizing
-`modal.js` is used in conjunction with `animate.css` by Daniel Eden. To use various animations on the modalbox, simply change the option for `animation_type` accordingly:
+`modal.js` is used in conjunction with `animate.css` by Daniel Eden. To use various animations on the modalbox, simply change the option for `animationType` and `animationTime` accordingly:
 
 ```
 var options = {
-	animation_type: 'fadeIn', // animate.css by Daniel Eden
-	animation_time: 500 // HAS TO BE the same timing as animate.css
-}
+    animationType: 'fadeIn', // animate.css by Daniel Eden
+    animationTime: 500 // will set and overwrite css timing in animate.css
+};
 
 ```
-
-`animation_time` has to be the same timing as what is indicated in the `animate.css` stylesheet. Do change accordingly to your needs.
 
 view animate.css docs at this link http://daneden.github.io/animate.css/
 
 
-## Known issues
-1. In IE, after switching images by navigating arrows, background overlay gets re-animated again causing a "flash".
+## Issues
+1. Not tested in IE yet.
 
 
 ## License

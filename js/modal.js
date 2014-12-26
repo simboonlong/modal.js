@@ -11,184 +11,172 @@ The above copyright notice and this permission notice shall be included in all c
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-(function( window, document, undefined ){
+(function( window, document, undefined ) {
 	"use strict";
 
-	function onWindowResize( event ){
-		this.update();
+	function onWindowResize(){
+        /* jshint validthis: true */
+        this.updatePosition();
 	}
 
-	function prepURL( url ){
-		var startIndex = url.indexOf("imgs") + 5, // + imgs string
-			lastIndex = url.lastIndexOf("jpg") - 1, // - dot string
-			low_img_src = url.slice( startIndex, lastIndex ),
-			high_img_src = './imgs/high-res/'+low_img_src+'.jpg';
+    Modal.prototype = {
 
-		return high_img_src;
-	}
+        prepURL : function( url ) {
+            var startIndex = url.indexOf("imgs") + 5, // + imgs string
+            lastIndex = url.lastIndexOf("jpg") - 1, // - dot string
+            lowResSrc = url.slice( startIndex, lastIndex ),
+            highResSrc = 'imgs/high-res/'+lowResSrc+'.jpg';
 
-	Modal.prototype.update = function( event ){
-		if ( document.getElementById('modal-bg') !== null ){
-			if ( document.body.clientHeight < window.innerHeight ){
-				this.modalBg.style.width = window.innerWidth + 'px';
-				this.modalBg.style.height = window.innerHeight + 'px';
-			} else {
-				this.modalBg.style.width = document.body.clientWidth + 'px';
-				this.modalBg.style.height = document.body.clientHeight + 'px';
-			} // modalBg overlay coverage
+            return highResSrc;
+        },
 
-			this.modalBox.style.maxWidth = this.img.naturalWidth + 'px';
-			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // update vertical position due to height changes
+        setDuration : function( id, time ) {
+            var duration = time / 1000;
+            id.style.animationDuration = ''+duration+'s';
+            id.style.transitionDuration = ''+duration+'s';
+            id.style.webkitTransitionDuration = ''+duration+'s';
+            id.style.webkitAnimationDuration = ''+duration+'s';
+        },
 
-		}
-	}
+        goNext : function( event ) {
+            if( this.selectedItem.nextElementSibling !== null) {
+                this.resetClasses();
 
-	Modal.prototype.destroy = function( event ){
-		this.removeClasses();
-		this.removeStyles();
-		this.img.src = ''; // remove src in order to enable img.src onload again
-		this.modalBg.parentNode.removeChild( this.modalBg ); // "destroy" entire tag
-	}
+                var url = this.selectedItem.nextElementSibling.getElementsByTagName('img')[0].src,
+                    highResSrc = this.prepURL( url );
 
-	Modal.prototype.removeClasses = function( event ){
-		this.modalBg.className = ''; // remove all animated classes
-		this.modalBox.className = ''; // remove all animated classes
-	}
+                this.img.onload = function() {
+                    this.selectedItem = this.selectedItem.nextElementSibling;
+                    this.modalBox.className += 'animated '+this.modalBox.animationType+'';
+                }.bind(this);
 
-	Modal.prototype.removeStyles = function( event ){
-		this.img.style.display = "none";  // temporary hide
-		this.closeModal.style.display = 'none'; // temporary hide
-		this.leftModal.style.display = 'none'; // temporary hide
-		this.rightModal.style.display = 'none'; // temporary hide
-	}
+                this.img.src = highResSrc;
+            }
+        },
 
-	Modal.prototype.closingModal = function( event ){
-		setTimeout( this.destroy.bind(this), this.modalBg.animation_time ); // after animation end, fire this
-		this.modalBg.className += " fadeOut";
-	}
+        goPrevious : function( event ) {
+            if( this.selectedItem.previousElementSibling !== null) {
+                this.resetClasses();
 
-	Modal.prototype.goLeft = function( event ){
-		if( this.modalBox.selectedFigure.previousElementSibling !== null){
-			var url = this.modalBox.selectedFigure.previousElementSibling.getElementsByTagName('img')[0].src,
-				high_img_src = prepURL( url );
-			this.img.src = high_img_src; // set img to image
+                var url = this.selectedItem.previousElementSibling.getElementsByTagName('img')[0].src,
+                    highResSrc = this.prepURL( url );
 
-			this.modalBox.selectedFigure = this.modalBox.selectedFigure.previousElementSibling;
-			this.imageLoaded();
-		}
-	}
+                this.img.onload = function() {
+                    this.selectedItem = this.selectedItem.previousElementSibling;
+                    this.modalBox.className += 'animated '+this.modalBox.animationType+'';
+                }.bind(this);
 
-	Modal.prototype.goRight = function( event ){
-		if( this.modalBox.selectedFigure.nextElementSibling !== null){
-			var url = this.modalBox.selectedFigure.nextElementSibling.getElementsByTagName('img')[0].src,
-				high_img_src = prepURL( url );
-			this.img.src = high_img_src; // set img to image
+                this.img.src = highResSrc;
+            }
+        },
 
-			this.modalBox.selectedFigure = this.modalBox.selectedFigure.nextElementSibling;
-			this.imageLoaded();
-		}
-	}
+        closeGallery : function( event ) {
+            this.modalBgOverlay.className = '';
+            this.modalBgOverlay.className = 'animated fadeOut';
 
-	Modal.prototype.imageLoaded = function( event ){
-		this.removeClasses();
-		this.removeStyles();
-		this.modalBg.className += 'animated fadeIn';
+            var that = this;
+            setTimeout( function() {
+                that.modalBgOverlay.remove();
+            }, this.animationTime );
+        },
 
-		this.img.onload = function( event ){
-			this.img.style.display = "inline-block"; // temporary show
-			this.leftModal.style.display = 'inline-block'; // temporary show
-			this.rightModal.style.display = 'inline-block'; // temporary show
-			this.closeModal.style.display = 'block'; // temporary show
+        openGallery : function( event ) {
+            this.modalBgOverlay.className = '';
+            this.modalBgOverlay.className += 'animated fadeIn';
+            this.selectedItem = event.target.parentNode;
 
-			this.modalBox.style.maxWidth = this.img.clientWidth + 'px';  // set modal size once for centralizing loading gif
-			this.modalBox.style.maxHeight = this.img.clientHeight + 'px'; // set modal size once for centralizing loading gif
+            var url = event.target.src,
+                highResSrc = this.prepURL( url );
 
-			this.modalBox.className += 'animated '+this.modalBox.animation_type+'';
-			this.update(); // update position
-		}.bind(this);
-	}
+            this.img.onload = function( event ) {
+                document.body.insertBefore(this.modalBgOverlay, document.body.firstChild);
+                this.modalBox.className += 'animated '+this.modalBox.animationType+'';
+                this.updatePosition();
+            }.bind(this);
 
-	Modal.prototype.openingModal = function( event ){
-		// load and switch img to high res url
-		var url = event.target.src,
-			high_img_src = prepURL( url );
-		this.img.src = high_img_src; // set img to image
+            this.img.src = highResSrc;
+        },
 
-		this.modalBox.selectedFigure = event.target.parentNode; // assign selected figure for navigation
-		this.imageLoaded();
-		document.body.insertBefore(this.modalBg, document.body.firstChild); // insert whole modal bg in
-	}
+        resetClasses : function() {
+            this.modalBox.className = '';
+            var a = this.modalBox.offsetWidth; // trigger a reflow for css class animation to work again
+        },
 
-	Modal.prototype.initialize = function(){
-		for ( var i = 0; i < this.gallery.figures_length; i +=1 ){
-			this.gallery.figure[i].getElementsByTagName('img')[0].addEventListener("click", this.openingModal.bind(this), false); // bind "this" Modal into method
-		};
-	}
+        updatePosition : function() {
+            var h = this.modalBox.getBoundingClientRect().height,
+                top = (h / 2) | 0;
+            this.modalBox.style.marginTop = '-'+top+'px';
+        },
 
-	function Modal( gallery, options ){
-		// create respective divs
-		var modalBg = document.createElement('div'),
-			modalBox = document.createElement('div'),
-			closeModal = document.createElement('div'),
-			leftModal = document.createElement('div'),
-			rightModal = document.createElement('div');
+        initialize : function() {
+            for ( var i = this.items.length; i--;){
+                this.items[i].addEventListener('click', this.openGallery.bind(this) );
+            }
+        }
 
-		// core settings
-		this.gallery = gallery;
-		this.gallery.figure = this.gallery.getElementsByTagName('figure');
-		this.gallery.figures_length = this.gallery.figure.length;
+    };
+
+	function Modal( el, options ) {
+        // core settings
+        this.el = el;
+        this.items = el.getElementsByTagName('li');
+        this.selectedItem = '';
+        this.animationType = options.animationType;
+        this.animationTime = options.animationTime;
 
 		// modal bg div tag
-		this.modalBg = modalBg;
-		this.modalBg.id = "modal-bg";
-		this.modalBg.animation_time = options.animation_time;
+		var modalBgOverlay = document.createElement('div');
+		this.modalBgOverlay = modalBgOverlay;
+		this.modalBgOverlay.id = "modal-bg-overlay";
+        this.setDuration( this.modalBgOverlay, this.animationTime );
 
 		// modal box div tag
+		var modalBox = document.createElement('div');
 		this.modalBox = modalBox;
 		this.modalBox.id = "modal-box";
-		this.modalBox.selectedFigure = '';
-		this.modalBox.animation_type = options.animation_type;
-		this.modalBg.appendChild( this.modalBox );
+		this.modalBox.animationType = options.animationType;
+        this.setDuration( this.modalBox, this.animationTime );
+		this.modalBgOverlay.appendChild( this.modalBox );
 
 		// closing div tag
-		this.closeModal = closeModal;
-		this.closeModal.className += "close-modal bold";
-		this.closeModal.innerHTML = '&#88;';
-		this.closeModal.addEventListener('click', this.closingModal.bind(this), false );  // bind "this" Modal into method
-		this.modalBox.appendChild( this.closeModal );
+		var closeSlide = document.createElement('div');
+		this.closeSlide = closeSlide;
+		this.closeSlide.className += "modal-close";
+		this.closeSlide.innerHTML = '&#88;';
+		this.closeSlide.addEventListener('click', this.closeGallery.bind(this), false );
+		this.modalBox.appendChild( this.closeSlide );
 
-		// left div tag
-		this.leftModal = leftModal;
-		this.leftModal.className += "left-modal bold";
-		this.leftModal.innerHTML = '&#60;';
-		this.leftModal.addEventListener('click', this.goLeft.bind(this), false );  // bind "this" Modal into method
-		this.modalBox.appendChild( this.leftModal );
+		// next div tag
+		var nextSlide = document.createElement('div');
+		this.nextSlide = nextSlide;
+		this.nextSlide.className += "modal-next";
+		this.nextSlide.innerHTML = '&#62;';
+		this.nextSlide.addEventListener('click', this.goNext.bind(this), false );
+		this.modalBox.appendChild( this.nextSlide );
 
-		// right div tag
-		this.rightModal = rightModal;
-		this.rightModal.className += "right-modal bold";
-		this.rightModal.innerHTML = '&#62;';
-		this.rightModal.addEventListener('click', this.goRight.bind(this), false );  // bind "this" Modal into method
-		this.modalBox.appendChild( this.rightModal );
+		// previous div tag
+		var previousSlide = document.createElement('div');
+		this.previousSlide = previousSlide;
+		this.previousSlide.className += "modal-previous";
+		this.previousSlide.innerHTML = '&#60;';
+		this.previousSlide.addEventListener('click', this.goPrevious.bind(this), false );
+		this.modalBox.appendChild( this.previousSlide );
 
 		// img tag
 		this.img = new Image();
 		this.img.src = '';
 		this.modalBox.appendChild( this.img );
-
-		this.initialize();
 	}
 
-	document.addEventListener('DOMContentLoaded', function( event ){
-
+	window.addEventListener('DOMContentLoaded', function( event ){
 		var options = {
-			animation_type: 'fadeIn', // animate.css by Daniel Eden
-			animation_time: 500 // HAS TO BE the same timing as animate.css
-		}
+			animationType: 'fadeIn', // animate.css by Daniel Eden
+			animationTime: 500 // will set and overwrite css timing in animate.css
+		};
 
-		var m = new Modal( document.getElementById('gallery'), options ); // load gallery of images into modal box
-	    window.addEventListener('resize', onWindowResize.bind(m), false); // bind Modal to resizing event for responsiveness
-
+		var m = new Modal( document.getElementById('any-name'), options ); // set config
+        m.initialize();  // init modal
+        window.addEventListener('resize', onWindowResize.bind(m), false);
 	});
 
 })( this, this.document );
