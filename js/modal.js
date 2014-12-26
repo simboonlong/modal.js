@@ -71,11 +71,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
         },
 
         closeGallery : function( event ) {
+            this.modalBox.className = '';
+            this.modalBox.className = 'animated fadeOut';
             this.modalBgOverlay.className = '';
             this.modalBgOverlay.className = 'animated fadeOut';
 
             var that = this;
             setTimeout( function() {
+                that.modalBox.remove();
                 that.modalBgOverlay.remove();
             }, this.animationTime );
         },
@@ -89,6 +92,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
                 highResSrc = this.prepURL( url );
 
             this.img.onload = function( event ) {
+                document.body.insertBefore(this.modalBox, document.body.firstChild);
                 document.body.insertBefore(this.modalBgOverlay, document.body.firstChild);
                 this.modalBox.className += 'animated '+this.modalBox.animationType+'';
                 this.updatePosition();
@@ -110,7 +114,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
         initialize : function() {
             for ( var i = this.items.length; i--;){
-                this.items[i].addEventListener('click', this.openGallery.bind(this) );
+                this.items[i].addEventListener('click', this.openGallery.bind(this), false );
             }
         }
 
@@ -129,6 +133,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.modalBgOverlay = modalBgOverlay;
 		this.modalBgOverlay.id = "modal-bg-overlay";
         this.setDuration( this.modalBgOverlay, this.animationTime );
+        this.modalBgOverlay.addEventListener('click', this.closeGallery.bind(this), false );
 
 		// modal box div tag
 		var modalBox = document.createElement('div');
@@ -136,7 +141,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 		this.modalBox.id = "modal-box";
 		this.modalBox.animationType = options.animationType;
         this.setDuration( this.modalBox, this.animationTime );
-		this.modalBgOverlay.appendChild( this.modalBox );
 
 		// closing div tag
 		var closeSlide = document.createElement('div');

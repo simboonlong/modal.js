@@ -36,15 +36,16 @@
 }
 
 #modal-box {
-    position: absolute;
+    position: fixed;
+    z-index: 1;
     margin: auto;
     top:50%;
     bottom: auto;
     left:5%;
     right:5%;
-    background-image: url('../imgs/loading.gif');
-    background-repeat: no-repeat;
-    background-position: center center;
+	background-image: url('../imgs/loading.gif');
+	background-repeat: no-repeat;
+	background-position: center center;
 }
 
 #modal-box img {
