@@ -8,6 +8,10 @@ a lightbox plugin that loads up a higher resolution image from its thumbnail.
 5. animations are handled by `animate.css` by Daniel Eden.
 
 
+## Demo
+Demo link at http://htmlpreview.github.io/?https://github.com/simboonlong/modal.js/blob/master/index.html
+
+
 ## Usage
 To use, initialize `modal.js` with the following arguments. The example uses a div with the id, "any-name".
 
@@ -41,7 +45,7 @@ var options = {
 
 ```
 
-view animate.css docs at this link http://daneden.github.io/animate.css/
+View animate.css docs at this link http://daneden.github.io/animate.css/
 
 
 ## Issues
