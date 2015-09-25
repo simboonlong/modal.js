@@ -9,6 +9,8 @@ a lightbox plugin that loads up a higher resolution image from its thumbnail.
 
 
 ## Demo
+![modal.js demo](modal.gif)
+
 Demo link at http://htmlpreview.github.io/?https://github.com/simboonlong/modal.js/blob/master/index.html
 
 
